@@ -17,7 +17,7 @@ TABLE_COLUMNS = {
 
 DB = Path(
     os.getenv(
-        "ATS_DB_PATH", Path.home() / ".local" / "share" / "resumes" / "records.sqlite3"
+        "ATS_DB_PATH", Path.home() / ".local" / "share" / "ats" / "records.sqlite3"
     )
 )
 CONNECTION: sqlite3.Connection | None = None
