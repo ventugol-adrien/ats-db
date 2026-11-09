@@ -1,0 +1,18 @@
+[project]
+name = "ats-db"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Adrien Ventugol", email = "ventugol.adrien@gmail.com" }]
+requires-python = ">=3.14"
+dependencies = ["ats-models>=0.1.0"]
+
+[project.scripts]
+resumes = "ats_db.cli:resumes"
+jobs = "ats_db.cli:jobs"
+
+[build-system]
+requires = ["uv_build>=0.10.8,<0.11.0"]
+build-backend = "uv_build"
+[tool.uv.sources]
+ats-models = { path = "/home/adrien/dev/packages/ats-models", editable = true }

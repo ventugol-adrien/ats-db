@@ -1,0 +1,53 @@
+# Python bytecode and build artifacts
+__pycache__/
+*.py[cod]
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+*.venv/
+venv/
+env/
+
+# Tool caches and coverage reports
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Local environment configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local SQLite databases, backups, and sidecars
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Private files and scripts
+*_*.py
+*_*.sh
+*_*.sqlite
+*_*.db
+!*__init__.py
+!*__main__.py
+!test_*.py
