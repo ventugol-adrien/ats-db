@@ -72,9 +72,10 @@ class CrudTests(unittest.TestCase):
             self.assertEqual(conn.execute("SELECT COUNT(*) FROM jobs").fetchone()[0], 0)
 
     def test_job_round_trip_with_generated_metadata(self) -> None:
-        insert_job(self.job())
+        job_id = insert_job(self.job())
         self.assert_closed()
         row = self.row("jobs")
+        self.assertEqual(job_id, row["id"])
         self.assertRegex(row["id"], r"^[0-9a-f]{32}$")
         self.assertIsInstance(row["entry_date"], str)
         self.assertIsInstance(row["modified_date"], str)
@@ -89,8 +90,9 @@ class CrudTests(unittest.TestCase):
         self.assert_closed()
 
     def test_resume_round_trip_with_nested_values_and_defaults(self) -> None:
-        insert_resume(self.resume())
+        resume_id = insert_resume(self.resume())
         row = self.row("resumes")
+        self.assertEqual(resume_id, row["id"])
         self.assertRegex(row["id"], r"^[0-9a-f]{32}$")
         self.assertEqual(row["successful"], 0)
         self.assertIsInstance(row["positions"], str)
@@ -101,6 +103,17 @@ class CrudTests(unittest.TestCase):
         self.assertEqual(record.technologies.backend, ["Python"])
         self.assertEqual(record.positions[0].contributions[0].headline, "Built an API")
         self.assert_closed()
+
+    def test_insert_returns_explicit_text_ids(self) -> None:
+        self.assertEqual(insert_job(self.job(id="job-explicit")), "job-explicit")
+        self.assertEqual(
+            insert_resume(self.resume(id="resume-explicit", job="job-explicit")),
+            "resume-explicit",
+        )
+
+    def test_explicit_null_id_remains_null(self) -> None:
+        self.assertIsNone(insert_job(self.job(id=None)))
+        self.assertIsNone(self.row("jobs")["id"])
 
     def test_metadata_updates_need_no_json_copies(self) -> None:
         insert_job(self.job(id="job-1", modified_date="2000-01-01"))

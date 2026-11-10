@@ -18,7 +18,7 @@ def read_resume(resume_id: str) -> ResumeRecord:
     return resume_from_row(row)
 
 
-def insert_resume(resume: Mapping[str, object]) -> str:
+def insert_resume(resume: Mapping[str, object]) -> str | None:
     payload = Resume.model_validate(dict(resume)).model_dump(mode="json")
     record = parse_resume_payload(payload)
     row = resume_to_row(record).model_dump(

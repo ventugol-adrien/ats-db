@@ -18,13 +18,13 @@ def read_job(job_id: str) -> JobRecord:
     return job_from_row(row)
 
 
-def insert_job(job: Mapping[str, object]) -> None:
+def insert_job(job: Mapping[str, object]) -> str | None:
     payload = Job.model_validate(dict(job)).model_dump(mode="json")
     record = parse_job_payload(payload)
     row = job_to_row(record).model_dump(
         exclude={"id", "entry_date", "modified_date"} - payload.keys()
     )
-    insert_record("jobs", row)
+    return insert_record("jobs", row)
 
 
 def delete_job(job_id: str) -> None:

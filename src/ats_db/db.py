@@ -95,7 +95,7 @@ def insert_record(
     cursor: sqlite3.Cursor,
     table: Table,
     record: Mapping[str, SQLValue],
-) -> str:
+) -> str | None:
     validate_table(table)
     unknown = record.keys() - TABLE_COLUMNS[table]
     if unknown:
@@ -106,12 +106,10 @@ def insert_record(
     placeholders = ", ".join("?" for _ in record)
     values = tuple(record.values())
     cursor.execute(
-        f"INSERT INTO {table} ({columns}) VALUES ({placeholders})",
+        f"INSERT INTO {table} ({columns}) VALUES ({placeholders}) RETURNING id",
         values,
     )
-    cursor.execute("SELECT last_insert_rowid()")
-    last_id = cursor.fetchone()[0]
-    return last_id
+    return cursor.fetchone()[0]
 
 
 @db_op
